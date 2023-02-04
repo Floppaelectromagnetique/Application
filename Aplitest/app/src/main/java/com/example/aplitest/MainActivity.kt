@@ -1,9 +1,11 @@
 package com.example.aplitest
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var imageWeather : ImageView
     lateinit var temperature: TextView
     lateinit var ville: TextView
+    lateinit var mainLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +36,19 @@ class MainActivity : AppCompatActivity() {
         imageWeather = findViewById(R.id.imageWeather)
         temperature = findViewById(R.id.temp)
         ville = findViewById(R.id.ville)
+        mainLayout = findViewById(R.id.mainLayout)
+        Search.setOnClickListener{
+            val town = editCityName.text.toString()
+            if (town.isEmpty()) {
+                Toast.makeText(this, "Entrez une ville pour rechercher", Toast.LENGTH_SHORT).show()
+            } else {
+                getWeatherInfo(town)
+            }
+        }
 
+
+    }
+    fun getWeatherInfo(town: String) {
         //TODO: create retrofit instance
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/data/2.5/weather/")
@@ -42,26 +57,22 @@ class MainActivity : AppCompatActivity() {
 
         val weatherService = retrofit.create(WeatherService::class.java)
 
+
         //TODO: call weather api
-        val result = weatherService.getWeatherByCity()
-        result.enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+        val result = weatherService.getWeatherByCity(town)
+        result.enqueue(object : Callback<weatherResult> {
+            override fun onResponse(call: Call<weatherResult>, response: Response<weatherResult>) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    val main = result?.get("main")?.asJsonObject
-                    val temp = main?.get("temp")?.asDouble
-                    val feeling = main?.get("feels_like")?.asDouble
+                    temperature.text = "${result?.main?.temp} °C"
+                    ville.text = result?.name
+                    Picasso.get().load("https://openweathermap.org/img/w/${result?.weather?.get(0)?.icon}.png").into(imageWeather)
 
-                    val weather = result?.get("weather")?.asJsonArray
-                    val icon = weather?.get(0)?.asJsonObject?.get("icon")?.asString
-                    Picasso.get().load("https://openweathermap.org/img/w/$icon.png").into(imageWeather)
-
-                    temperature.text = "$temp °C"
-                    ville.text = "ressentie: $feeling"
+                    mainLayout.visibility = View.VISIBLE
                 }
             }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+            override fun onFailure(call: Call<weatherResult>, t: Throwable) {
                 Toast.makeText(applicationContext, "Erreur Serveur", Toast.LENGTH_SHORT).show()
             }
         })
