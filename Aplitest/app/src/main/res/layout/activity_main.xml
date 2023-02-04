@@ -30,21 +30,22 @@
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/mainLayaout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/Search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="57dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="42dp"
         android:background="#03A9F4"
         android:text="Rechercher"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintHorizontal_bias="0.587"
         app:layout_constraintStart_toEndOf="@+id/searchtown"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,19 +74,19 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10°C"
+                android:textSize="26dp" />
+
+            <TextView
                 android:id="@+id/ville"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Paris"
                 android:textSize="16sp" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10°C"
-            android:textSize="26dp" />
 
     </LinearLayout>
 

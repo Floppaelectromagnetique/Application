@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     val temp = main?.get("temp")?.asDouble
                     val feeling = main?.get("feels_like")?.asDouble
 
-                    val weather = result?.get("Weather")?.asJsonArray
+                    val weather = result?.get("weather")?.asJsonArray
                     val icon = weather?.get(0)?.asJsonObject?.get("icon")?.asString
                     Picasso.get().load("https://openweathermap.org/img/w/$icon.png").into(imageWeather)
 
